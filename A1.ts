@@ -1,124 +1,127 @@
-function transformText(text: string, makeUpper?: boolean): string {
-  if (makeUpper === false) {
-    return text.toLowerCase();
-  }
-  return text.toUpperCase();
+function formatString(input: string, toUpper?: boolean): string {
+  return toUpper === false ? input.toLowerCase() : input.toUpperCase();
 }
 
 console.log("Output 1");
-console.log(transformText("World"));
-console.log(transformText("World", true));
-console.log(transformText("World", false));
+console.log(formatString("Hello"));
+console.log(formatString("Hello", true));
+console.log(formatString("Hello", false));
 
-function filterTopRatedMovies(
-  movies: { name: string; score: number }[]
-): { name: string; score: number }[] {
-  return movies.filter((movie) => movie.score >= 4);
+function filterByRating(
+  items: { title: string; rating: number }[]
+): { title: string; rating: number }[] {
+  return items.filter((item) => item.rating >= 4);
 }
 
-const movieList = [
-  { name: "Inception", score: 4.8 },
-  { name: "Cats", score: 2.1 },
-  { name: "Interstellar", score: 5.0 },
-  { name: "Avatar", score: 4.3 },
-];
-
 console.log("Output 2");
-console.log(filterTopRatedMovies(movieList));
+const books = [
+  { title: "Book A", rating: 4.5 },
+  { title: "Book B", rating: 3.2 },
+  { title: "Book C", rating: 5.0 },
+];
+console.log(filterByRating(books));
 
-function mergeArrays<T>(...groups: T[][]): T[] {
-  return groups.reduce((acc, curr) => acc.concat(curr), []);
+function concatenateArrays<T>(...arrays: T[][]): T[] {
+  return arrays.reduce(
+    (accumulator, currentArray) => accumulator.concat(currentArray),
+    []
+  );
 }
 
 console.log("Output 3");
-console.log(mergeArrays(["red", "blue"], ["green"]));
-console.log(mergeArrays([100, 200], [300, 400], [500]));
+console.log(concatenateArrays(["a", "b"], ["c"]));
+console.log(concatenateArrays([1, 2], [3, 4], [5]));
 
-class Transport {
-  private brand: string;
-  yearMade: number;
-  constructor(brand: string, yearMade: number) {
-    this.brand = brand;
-    this.yearMade = yearMade;
+class Vehicle {
+  private make: string;
+  private year: number;
+
+  constructor(make: string, year: number) {
+    this.make = make;
+    this.year = year;
   }
 
-  getDetails() {
-    return `Brand: ${this.brand}, Year: ${this.yearMade}`;
+  getInfo(): string {
+    return `Make: ${this.make}, Year: ${this.year}`;
   }
 }
 
-class Bike extends Transport {
-  constructor(brand: string, yearMade: number, private type: string) {
-    super(brand, yearMade);
+class Car extends Vehicle {
+  private model: string;
+
+  constructor(make: string, year: number, model: string) {
+    super(make, year);
+    this.model = model;
   }
 
-  getType() {
-    return `Type: ${this.type}`;
+  getModel(): string {
+    return `Model: ${this.model}`;
   }
 }
 
 console.log("Output 4");
-const myBike = new Bike("Yamaha", 2022, "Sport");
-console.log(myBike.getDetails());
-console.log(myBike.getType());
+const myCar = new Car("Toyota", 2020, "Corolla");
+console.log(myCar.getInfo());
+console.log(myCar.getModel());
 
-function evaluateInput(input: string | number): number {
-  return typeof input === "string" ? input.length : input * 2;
+function processValue(value: string | number): number {
+  return typeof value === "string" ? value.length : value * 2;
 }
 
 console.log("Output 5");
-console.log(evaluateInput("typescript"));
-console.log(evaluateInput(15));
+console.log(processValue("hello"));
+console.log(processValue(10));
 
-interface Item {
-  title: string;
-  cost: number;
+interface Product {
+  name: string;
+  price: number;
 }
 
-function findCostliestItem(items: Item[]): Item | null {
-  if (items.length === 0) return null;
-
-  return items.reduce((max, item) => (item.cost > max.cost ? item : max));
+function getMostExpensiveProduct(products: Product[]): Product | null {
+  if (products.length === 0) return null;
+  return products.reduce((prev, curr) =>
+    curr.price > prev.price ? curr : prev
+  );
 }
-
-const shopItems = [
-  { title: "Shoes", cost: 1500 },
-  { title: "Hat", cost: 800 },
-  { title: "Watch", cost: 2500 },
-  { title: "Bag", cost: 2200 },
-];
 
 console.log("Output 6");
-console.log(findCostliestItem(shopItems));
+const products: Product[] = [
+  { name: "Pen", price: 10 },
+  { name: "Notebook", price: 25 },
+  { name: "Bag", price: 50 },
+];
+console.log(getMostExpensiveProduct(products));
 
-enum WeekDay {
-  Mon,
-  Tue,
-  Wed,
-  Thu,
-  Fri,
-  Sat,
-  Sun,
+enum Day {
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+  Sunday,
 }
 
-function classifyDay(day: WeekDay): string {
-  return day === WeekDay.Sat || day === WeekDay.Sun ? "Weekend" : "Weekday";
+function getDayType(day: Day): string {
+  return day === Day.Saturday || day === Day.Sunday ? "Weekend" : "Weekday";
 }
 
 console.log("Output 7");
-console.log(classifyDay(WeekDay.Tue));
-console.log(classifyDay(WeekDay.Sun));
+console.log(getDayType(Day.Monday));
+console.log(getDayType(Day.Sunday));
 
-async function delayedSquare(num: number): Promise<number> {
+async function squareAsync(n: number): Promise<number> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      num < 0
-        ? reject("Error: Negative number is invalid")
-        : resolve(num * num);
+      if (n < 0) {
+        reject(new Error("Negative number not allowed"));
+      } else {
+        resolve(n * n);
+      }
     }, 1000);
   });
 }
 
 console.log("Output 8");
-delayedSquare(6).then(console.log);
-delayedSquare(-7).catch(console.error);
+squareAsync(4).then(console.log);
+squareAsync(-3).catch(console.error);
